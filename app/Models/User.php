@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -44,5 +45,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected function initials(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $words = explode(' ', $this->name);
+
+                $firstInitial = strtoupper(substr($words[0], 0, 1));
+
+                $lastInitial = count($words) > 1 ? strtoupper(substr(end($words), 0, 1)) : '';
+
+                return mb_strtoupper($firstInitial . $lastInitial);
+            },
+        );
     }
 }
