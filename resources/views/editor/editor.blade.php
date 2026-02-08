@@ -4,15 +4,22 @@
 
         <div class="w-full lg:w-2/3 space-y-6">
             
+            <div class="flex justify-end mb-4">
+                <div class="flex gap-2">
+                    <button type="button" id="lang-pt" class="px-4 py-2 rounded-lg font-semibold text-sm bg-indigo-600 text-white hover:bg-indigo-300 transition">PT-BR</button>
+                    <button type="button" id="lang-en" class="px-4 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-gray-800 hover:bg-indigo-300 transition">EN</button>
+                </div>
+            </div>
+            
             <div class="bg-indigo-700 shadow-lg rounded-2xl p-8 text-white">
-                <h2 class="text-2xl font-bold">Editor de Links</h2>
-                <p class="text-indigo-100 text-sm opacity-80">Adicione ícones para destacar seus links.</p>
+                <h2 id="title-editor" class="text-2xl font-bold">Editor de Links</h2>
+                <p id="subtitle-editor" class="text-indigo-100 text-sm opacity-80">Dica: Adicione ícones para destacar seus links.</p>
                 @if($linktree && $linktree->exists())
-                    <button type="button" onclick="copyLink()" class="bg-white text-indigo-700 px-4 py-2 rounded-lg font-bold text-sm shadow-md hover:bg-gray-100 transition" data-user-id="{{ auth()->user()->id }}">
+                    <button type="button" id="copy-link-btn" onclick="copyLink()" class="bg-white text-indigo-700 px-4 py-2 rounded-lg font-bold text-sm shadow-md hover:bg-gray-100 transition" data-user-id="{{ auth()->user()->id }}">
                         🔗 Copiar Meu Link
                     </button>
                 @else
-                    <p class="text-indigo-200 text-sm">Salve seu linktree para gerar um link compartilhável.</p>
+                    <p id="save-linktree-msg" class="text-indigo-200 text-sm">Salve seu linktree para gerar um link compartilhável.</p>
                 @endif
             </div>
             @if ($errors->any())
@@ -29,7 +36,7 @@
                     @csrf
                     
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Seu Nome/Usuário</label>
+                        <label for="input-name" id="label-name" class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Seu Nome/Usuário</label>
                         <input type="text" id="input-name" name="input_name" placeholder="Ex: @seuusuario" maxlength="20" 
                             value="{{ $linktree?->title ?? '' }}"
                             class="w-full bg-gray-50 dark:bg-gray-900 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-white transition">
@@ -37,7 +44,7 @@
 
                     <div class="grid grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Cor do Background</label>
+                            <label for="bg-color" id="label-bg-color" class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Cor do Background</label>
                             <div class="flex items-center gap-3">
                                 <input type="color" id="bg-color" name="bg_color" value="{{ $linktree?->bg_color ?? '#1f2937' }}"
                                     class="w-16 h-12 rounded-lg cursor-pointer border-none">
@@ -46,7 +53,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Cor dos Textos</label>
+                            <label for="text-color" id="label-text-color" class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Cor dos Textos</label>
                             <div class="flex items-center gap-3">
                                 <input type="color" id="text-color" name="text_color" value="{{ $linktree?->text_color ?? '#ffffff' }}"
                                     class="w-16 h-12 rounded-lg cursor-pointer border-none">
@@ -55,9 +62,9 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Imagem de Fundo</label>
+                            <label id="label-bg-image" class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Imagem de Fundo</label>
                             <div class="flex items-center gap-3">
-                                <label class="cursor-pointer flex items-center justify-center w-16 h-12 bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-indigo-500 transition flex-shrink-0">
+                                <label class="cursor-pointer flex items-center justify-center w-16 h-12 bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-indigo-500 transition flex-shrink-0 relative group">
                                     @if($linktree?->bg_image)
                                         <img id="bg-preview-img" src="{{ asset('storage/' . $linktree->bg_image) }}" class="w-full h-full object-cover rounded-lg">
                                     @else
@@ -65,7 +72,10 @@
                                     @endif
                                     <input type="file" name="bg_image" id="bg-image-input" class="hidden" accept="image/*">
                                 </label>
-                                <span class="text-xs text-gray-500">{{ $linktree?->bg_image ? 'Mudar' : 'Adicionar' }}</span>
+                                @if($linktree?->bg_image)
+                                    <button type="button" id="remove-bg-btn" class="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition">✕</button>
+                                @endif
+                                <span id="bg-image-text" class="text-xs text-gray-500">{{ $linktree?->bg_image ? 'Mudar' : 'Adicionar' }}</span>
                             </div>
                         </div>
                     </div>
@@ -74,7 +84,7 @@
 
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Configurar Links</label>
+                            <label id="label-configure-links" class="text-xs font-bold uppercase tracking-widest text-gray-400">Configurar Links</label>
                             <button type="button" id="add-link-btn" class="text-indigo-500 text-sm font-bold hover:text-indigo-400 transition">
                                 + Adicionar Novo Link
                             </button>
@@ -148,7 +158,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all">
+                    <button type="submit" id="btn-save" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all">
                         Salvar Alterações
                     </button>
                 </form>
@@ -183,6 +193,110 @@
     </div>
 
     <script>
+        
+        const translations = {
+            'pt-BR': {
+                'title-editor': 'Editor de Links',
+                'subtitle-editor': 'Dica: Adicione ícones para destacar seus links.',
+                'label-name': 'Seu Nome/Usuário',
+                'label-bg-color': 'Cor do Background',
+                'label-text-color': 'Cor dos Textos',
+                'label-bg-image': 'Imagem de Fundo',
+                'label-configure-links': 'Configurar Links',
+                'add-link-btn': '+ Adicionar Novo Link',
+                'btn-save': 'Salvar Alterações',
+                'copy-link-btn': '🔗 Copiar Meu Link',
+                'save-linktree-msg': 'Salve seu linktree para gerar um link compartilhável.',
+                'link-title-placeholder': 'Título do Link',
+                'link-url-placeholder': 'URL de destino',
+                'link-color-label': 'Cor:',
+                'link-color-text': 'Cor',
+                'add-icon': 'Adicionar ícone',
+                'change-icon': 'Alterar',
+                'success-copy': '✓ Link copiado com sucesso! Compartilhe no Instagram.',
+                'error-copy': 'Erro ao copiar. Tente novamente.',
+            },
+            'en': {
+                'title-editor': 'Link Editor',
+                'subtitle-editor': 'Add icons to highlight your links.',
+                'label-name': 'Your Name/Username',
+                'label-bg-color': 'Background Color',
+                'label-text-color': 'Text Color',
+                'label-bg-image': 'Background Image',
+                'label-configure-links': 'Configure Links',
+                'add-link-btn': '+ Add New Link',
+                'btn-save': 'Save Changes',
+                'copy-link-btn': '🔗 Copy My Link',
+                'save-linktree-msg': 'Save your linktree to generate a shareable link.',
+                'link-title-placeholder': 'Link Title',
+                'link-url-placeholder': 'Destination URL',
+                'link-color-label': 'Color:',
+                'link-color-text': 'Color',
+                'add-icon': 'Add icon',
+                'change-icon': 'Change',
+                'success-copy': '✓ Link copied successfully! Share on Instagram.',
+                'error-copy': 'Error copying. Try again.',
+            }
+        };
+
+        // Carregar idioma salvo ou usar pt-BR como padrão || Load saved language or default to pt-BR
+        let currentLanguage = localStorage.getItem('selectedLanguage') || 'pt-BR';
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('selectedLanguage', lang);
+            
+            document.getElementById('lang-pt').classList.toggle('bg-indigo-600', lang === 'pt-BR');
+            document.getElementById('lang-pt').classList.toggle('text-white', lang === 'pt-BR');
+            document.getElementById('lang-pt').classList.toggle('bg-gray-200', lang !== 'pt-BR');
+            document.getElementById('lang-pt').classList.toggle('text-gray-800', lang !== 'pt-BR');
+
+            document.getElementById('lang-en').classList.toggle('bg-indigo-600', lang === 'en');
+            document.getElementById('lang-en').classList.toggle('text-white', lang === 'en');
+            document.getElementById('lang-en').classList.toggle('bg-gray-200', lang !== 'en');
+            document.getElementById('lang-en').classList.toggle('text-gray-800', lang !== 'en');
+
+            t('title-editor') && (document.getElementById('title-editor').innerText = t('title-editor'));
+            t('subtitle-editor') && (document.getElementById('subtitle-editor').innerText = t('subtitle-editor'));
+            t('label-name') && (document.getElementById('label-name').innerText = t('label-name'));
+            t('label-bg-color') && (document.getElementById('label-bg-color').innerText = t('label-bg-color'));
+            t('label-text-color') && (document.getElementById('label-text-color').innerText = t('label-text-color'));
+            t('label-bg-image') && (document.getElementById('label-bg-image').innerText = t('label-bg-image'));
+            t('label-configure-links') && (document.getElementById('label-configure-links').innerText = t('label-configure-links'));
+            t('add-link-btn') && (document.getElementById('add-link-btn').innerText = t('add-link-btn'));
+            t('btn-save') && (document.getElementById('btn-save').innerText = t('btn-save'));
+            if (document.getElementById('copy-link-btn')) {
+                document.getElementById('copy-link-btn').innerText = t('copy-link-btn');
+            }
+            if (document.getElementById('save-linktree-msg')) {
+                document.getElementById('save-linktree-msg').innerText = t('save-linktree-msg');
+            }
+            
+            document.querySelectorAll('.link-title-input').forEach(input => {
+                input.placeholder = t('link-title-placeholder');
+            });
+            document.querySelectorAll('input[name*="url_link"]').forEach(input => {
+                input.placeholder = t('link-url-placeholder');
+            });
+            
+            document.querySelectorAll('.link-color-label').forEach((label, index) => {
+                const card = label.closest('.link-card');
+                if (card) {
+                    const text = card.querySelector('.img-preview-thumb').classList.contains('hidden') ? t('add-icon') : t('change-icon');
+                    card.querySelector('span:last-child').innerText = text;
+                }
+            });
+        }
+
+        function t(key) {
+            return translations[currentLanguage][key] || '';
+        }
+
+        document.getElementById('lang-pt').addEventListener('click', () => setLanguage('pt-BR'));
+        document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
+        setLanguage(currentLanguage);
+
         const inputName = document.getElementById('input-name');
         const previewName = document.getElementById('preview-name');
         const addLinkBtn = document.getElementById('add-link-btn');
@@ -234,10 +348,54 @@
                     if (overlay) {
                         overlay.classList.add('bg-black/30');
                     }
+                    
+                    const bgImageContainer = bgImageInput.closest('.flex.items-center.gap-3');
+                    let removeBtn = bgImageContainer.querySelector('#remove-bg-btn');
+                    if (!removeBtn) {
+                        removeBtn = document.createElement('button');
+                        removeBtn.type = 'button';
+                        removeBtn.id = 'remove-bg-btn';
+                        removeBtn.className = 'px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition';
+                        removeBtn.innerText = '✕';
+                        removeBtn.addEventListener('click', removeBgImage);
+                        bgImageContainer.insertBefore(removeBtn, bgImageContainer.querySelector('#bg-image-text'));
+                    }
+                    
+                    const bgImageText = bgImageContainer.querySelector('#bg-image-text');
+                    bgImageText.innerText = currentLanguage === 'en' ? 'Change' : 'Mudar';
                 };
                 reader.readAsDataURL(file);
             }
         });
+
+        function removeBgImage(e) {
+            e.preventDefault();
+            
+            bgImageInput.value = '';
+            
+            previewContent.style.backgroundImage = '';
+            previewContent.style.backgroundSize = '';
+            previewContent.style.backgroundPosition = '';
+            
+            const overlay = previewContent.querySelector('.absolute');
+            if (overlay) {
+                overlay.classList.remove('bg-black/30');
+            }
+            
+            const bgImageContainer = bgImageInput.closest('.flex.items-center.gap-3');
+            const removeBtn = bgImageContainer.querySelector('#remove-bg-btn');
+            if (removeBtn) {
+                removeBtn.remove();
+            }
+            
+            const bgImageText = bgImageContainer.querySelector('#bg-image-text');
+            bgImageText.innerText = currentLanguage === 'en' ? 'Add' : 'Adicionar';
+        }
+
+        const existingRemoveBtn = document.getElementById('remove-bg-btn');
+        if (existingRemoveBtn) {
+            existingRemoveBtn.addEventListener('click', removeBgImage);
+        }
 
         function updatePreview() {
             previewLinksList.innerHTML = '';
@@ -249,13 +407,12 @@
                 const isImgHidden = card.querySelector('.img-preview-thumb').classList.contains('hidden');
                 const buttonColor = card.querySelector('.link-color-input')?.value || '#ffffff';
                 
-                // Calculate text color based on button color
                 const textColor = isLightColor(buttonColor) ? '#000000' : '#ffffff';
 
                 const linkHtml = `
                     <div class="relative flex items-center justify-center w-full min-h-[52px] px-12 rounded-2xl font-semibold text-sm shadow-md overflow-hidden transition-all" style="background-color: ${buttonColor}; color: ${textColor};">
                         
-                        <div class="${isImgHidden ? 'hidden' : ''} absolute left-2 w-8 h-8 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                        <div class="${isImgHidden ? 'hidden' : ''} absolute left-2 w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
                             <img src="${imgSrc}" class="w-full h-full object-cover">
                         </div>
                         
@@ -266,7 +423,6 @@
             });
         }
 
-        // Function to determine if color is light or dark
         function isLightColor(color) {
             const hex = color.replace('#', '');
             const r = parseInt(hex.substr(0, 2), 16);
@@ -329,11 +485,13 @@
                 }
             });
 
-            // Reset color label
             newCard.querySelector('.link-color-label').innerText = '#ffffff';
 
             newCard.querySelector('.img-preview-thumb').classList.add('hidden');
             newCard.querySelector('.img-icon-placeholder').classList.remove('hidden');
+            
+            newCard.querySelector('.link-title-input').placeholder = t('link-title-placeholder');
+            newCard.querySelector('input[name*="url_link"]').placeholder = t('link-url-placeholder');
 
             linksContainer.appendChild(newCard);
             updatePreview();
@@ -353,16 +511,16 @@
         function copyLink() {
             const userId = document.querySelector('button[onclick="copyLink()"]')?.getAttribute('data-user-id');
             if (!userId) {
-                showToast('Erro ao copiar link!');
+                showToast(t('error-copy'));
                 return;
             }
             
             const url = "{{ route('linktree.show', Auth::id()) }}";
             
             navigator.clipboard.writeText(url).then(() => {
-                showToast('✓ Link copiado com sucesso! Compartilhe no Instagram.');
+                showToast(t('success-copy'));
             }).catch(() => {
-                showToast('Erro ao copiar. Tente novamente.');
+                showToast(t('error-copy'));
             });
         }
 
