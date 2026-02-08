@@ -103,7 +103,7 @@
                                         </div>
 
                                         <div class="flex items-center gap-3 mt-3">
-                                            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Cor:</label>
+                                            <label class="text-xs font-bold uppercase tracking-widest text-gray-400" id="link-color-text">Cor:</label>
                                             <input type="color" name="links[{{ $index }}][button_color]" value="{{ $dado->button_color ?? '#ffffff' }}"
                                                    class="w-10 h-8 rounded-lg cursor-pointer border-none link-color-input">
                                             <span class="text-xs text-gray-500 link-color-label">{{ $dado->button_color ?? '#ffffff' }}</span>
@@ -137,7 +137,7 @@
                                     </div>
 
                                     <div class="flex items-center gap-3 mt-3">
-                                        <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Cor:</label>
+                                        <label class="text-xs font-bold uppercase tracking-widest text-gray-400" id="link-color-text">Cor:</label>
                                         <input type="color" name="links[0][button_color]" value="#ffffff"
                                                class="w-10 h-8 rounded-lg cursor-pointer border-none link-color-input">
                                         <span class="text-xs text-gray-500 link-color-label">#ffffff</span>
@@ -209,7 +209,6 @@
                 'save-linktree-msg': 'Salve seu linktree para gerar um link compartilhável.',
                 'link-title-placeholder': 'Título do Link',
                 'link-url-placeholder': 'URL de destino',
-                'link-color-label': 'Cor:',
                 'link-color-text': 'Cor',
                 'add-icon': 'Adicionar ícone',
                 'change-icon': 'Alterar',
@@ -230,7 +229,6 @@
                 'save-linktree-msg': 'Save your linktree to generate a shareable link.',
                 'link-title-placeholder': 'Link Title',
                 'link-url-placeholder': 'Destination URL',
-                'link-color-label': 'Color:',
                 'link-color-text': 'Color',
                 'add-icon': 'Add icon',
                 'change-icon': 'Change',
@@ -285,6 +283,10 @@
                     const text = card.querySelector('.img-preview-thumb').classList.contains('hidden') ? t('add-icon') : t('change-icon');
                     card.querySelector('span:last-child').innerText = text;
                 }
+            });
+
+            document.querySelectorAll('[id="link-color-text"]').forEach(el => {
+                el.innerText = t('link-color-text') + ':';
             });
         }
 
