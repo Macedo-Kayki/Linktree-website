@@ -33,7 +33,7 @@
 **Linktree Website** is a robust application built with Laravel and Docker. It empowers users to create a personalized landing page housing unlimited links to their social media, portfolios, or content. The standout features include **Live Preview**, **Public Sharing**, and deep visual customization.
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x400?text=Place+Your+English+Preview+Here" alt="Project Preview English" width="100%">
+  <img src="public/previewen.png" alt="Project Preview English" width="100%">
 </div>
 <br />
 
@@ -116,7 +116,7 @@
 **Linktree Website** é uma aplicação robusta desenvolvida com Laravel e Docker. Ela permite criar uma landing page personalizada com links ilimitados. Os grandes diferenciais são o **Live Preview** em tempo real, **Compartilhamento Público** e a personalização visual avançada.
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x400?text=Coloque+seu+Preview+em+Portugues+Aqui" alt="Project Preview Portuguese" width="100%">
+  <img src="public/previewptbr.png" alt="Project Preview Portuguese" width="100%">
 </div>
 <br />
 
@@ -193,3 +193,4 @@
 <div align="center">
   <sub>Developed by <a href="https://github.com/Macedo-Kayki">Kayki Macedo</a></sub>
 </div>
+
