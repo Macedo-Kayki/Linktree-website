@@ -30,14 +30,21 @@
 
 ### 📖 About the Project
 
-**Linktree Website** is a robust application built with Laravel and Docker. It empowers users to create a personalized landing page housing unlimited links to their social media, portfolios, or content. The standout features are the **Live Preview** for instant feedback and **Public Link Sharing** for easy distribution.
+**Linktree Website** is a robust application built with Laravel and Docker. It empowers users to create a personalized landing page housing unlimited links to their social media, portfolios, or content. The standout features include **Live Preview**, **Public Sharing**, and deep visual customization.
+
+<div align="center">
+  <img src="https://via.placeholder.com/800x400?text=Place+Your+English+Preview+Here" alt="Project Preview English" width="100%">
+</div>
+<br />
 
 ### ✨ Key Features
 
-* **🔗 Public Shareable Link:** Generate a unique public URL (e.g., `yourdomain.com/username`) that anyone can visit without logging in.
+* **🌐 Multi-Language Support:** Users can switch the interface between English (EN) and Portuguese (PT-BR).
+* **🔗 Public Shareable Link:** Generate a unique public URL (e.g., `yourdomain.com/username`) accessible without login.
 * **📱 Real-Time Live Preview:** Watch your page update instantly as you edit settings (WYSIWYG).
-* **🎨 Full Visual Customization:**
-    * **Background:** Choose a solid color or upload a custom background image.
+* **🎨 Advanced Visual Customization:**
+    * **Layered Backgrounds:** Combine a transparent image (PNG) with a custom background color for unique effects.
+    * **Background:** Choose a solid color or upload a custom image.
     * **Buttons:** Customize button colors to match your brand.
     * **Typography:** Change text colors for better contrast and style.
 * **🐳 Dockerized Environment:** Fully containerized for consistent development and deployment.
@@ -71,22 +78,31 @@
     ```
 
 4.  **Install Dependencies:**
-    *Run inside the container (assuming service name is 'app'):*
     ```bash
     # Install PHP dependencies
     docker-compose exec app composer install
+    
+    # Install Frontend dependencies
+    docker-compose exec app npm install && npm run build
+    ```
 
+5.  **Setup Application:**
+    *Essential commands to generate keys, link storage and fix permissions:*
+    ```bash
     # Generate App Key
     docker-compose exec app php artisan key:generate
 
     # Run Database Migrations
     docker-compose exec app php artisan migrate
 
-    # Install Frontend assets & Build
-    docker-compose exec app npm install && npm run build
+    # Link Storage (Crucial for images to work)
+    docker-compose exec app php artisan storage:link
+
+    # Fix Storage Permissions (Avoids "Permission Denied" errors)
+    docker-compose exec app chmod -R 777 storage bootstrap/cache
     ```
 
-5.  **Access the App:**
+6.  **Access the App:**
     Visit `http://localhost:8000` (or the port specified in your configuration).
 
 ---
@@ -97,14 +113,21 @@
 
 ### 📖 Sobre o Projeto
 
-**Linktree Website** é uma aplicação robusta desenvolvida com Laravel e Docker. Ela permite criar uma landing page personalizada com links ilimitados. Os grandes diferenciais são o **Live Preview** em tempo real e o **Compartilhamento de Link Público**, facilitando a divulgação do seu perfil.
+**Linktree Website** é uma aplicação robusta desenvolvida com Laravel e Docker. Ela permite criar uma landing page personalizada com links ilimitados. Os grandes diferenciais são o **Live Preview** em tempo real, **Compartilhamento Público** e a personalização visual avançada.
+
+<div align="center">
+  <img src="https://via.placeholder.com/800x400?text=Coloque+seu+Preview+em+Portugues+Aqui" alt="Project Preview Portuguese" width="100%">
+</div>
+<br />
 
 ### ✨ Funcionalidades
 
-* **🔗 Link Público Compartilhável:** Gere uma URL única (ex: `seudominio.com/usuario`) que qualquer pessoa pode acessar para ver seus links, sem necessidade de login.
+* **🌐 Suporte Multi-Idioma:** O usuário pode alternar a interface entre Português (PT-BR) e Inglês (EN).
+* **🔗 Link Público Compartilhável:** Gere uma URL única (ex: `seudominio.com/usuario`) acessível a todos sem login.
 * **📱 Live Preview em Tempo Real:** Veja sua página sendo montada instantaneamente enquanto você edita (WYSIWYG).
-* **🎨 Personalização Visual Completa:**
-    * **Fundo (Background):** Escolha uma cor sólida ou faça upload de uma imagem de fundo.
+* **🎨 Personalização Visual Avançada:**
+    * **Camadas de Fundo:** Combine uma imagem transparente (PNG) com uma cor de fundo sólida para criar efeitos únicos.
+    * **Fundo (Background):** Escolha uma cor sólida ou faça upload de uma imagem.
     * **Botões:** Altere a cor dos botões para combinar com sua marca.
     * **Tipografia:** Ajuste a cor dos textos para melhor contraste e estilo.
 * **🐳 Ambiente Docker:** Totalmente conteinerizado para facilitar o desenvolvimento e deploy.
@@ -138,22 +161,31 @@
     ```
 
 4.  **Instale as Dependências:**
-    *Execute estes comandos para rodar dentro do container (assumindo que o serviço se chama 'app'):*
     ```bash
     # Instalar dependências do PHP
     docker-compose exec app composer install
 
+    # Instalar dependências do Frontend
+    docker-compose exec app npm install && npm run build
+    ```
+
+5.  **Configure a Aplicação:**
+    *Comandos essenciais para gerar chaves, linkar o storage e corrigir permissões:*
+    ```bash
     # Gerar a chave da aplicação
     docker-compose exec app php artisan key:generate
 
     # Rodar as migrações do banco
     docker-compose exec app php artisan migrate
 
-    # Instalar assets do Frontend & Buildar
-    docker-compose exec app npm install && npm run build
+    # Linkar o Storage (Essencial para imagens funcionarem)
+    docker-compose exec app php artisan storage:link
+
+    # Corrigir Permissões de Escrita (Evita erros de "Permission Denied")
+    docker-compose exec app chmod -R 777 storage bootstrap/cache
     ```
 
-5.  **Acesse o App:**
+6.  **Acesse o App:**
     Acesse `http://localhost:8000` (ou a porta especificada na sua configuração).
 
 ---
